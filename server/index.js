@@ -25,7 +25,8 @@ const playersArrayServer = [];
 
 io.on("connection", (socket) => {
   console.log("New client connected");
-  console.log(socket.id);
+  console.log("socket.id", socket.id);
+
   socket.emit("init", {
     id: socket.id,
     playersArrayServer: playersArrayServer,

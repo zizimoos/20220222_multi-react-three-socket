@@ -15,6 +15,7 @@ const Controls = (player) => {
         break;
       default:
     }
+    console.log(player.current.position);
   };
 };
 export default Controls;
