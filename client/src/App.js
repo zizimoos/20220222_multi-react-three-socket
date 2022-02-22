@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { Suspense } from "react";
@@ -7,6 +7,9 @@ import { OrbitControls } from "@react-three/drei";
 
 import GroundField from "./components/GroundField";
 import Player from "./components/Player";
+
+import io from "socket.io-client";
+const socket = io("http://localhost:3001");
 
 const CanvasContainer = styled.div`
   width: 800px;
@@ -19,11 +22,16 @@ const CanvasContainer = styled.div`
 `;
 
 function App() {
-  const PlayerArry = [
-    { id: "xxxx", name: "xxxx" },
-    { id: "aaaa", name: "aaaa" },
-    { id: "cccc", name: "cccc" },
-  ];
+  const [PlayerArry, setPlayerArry] = React.useState([]);
+  const [myId, setMyId] = React.useState("");
+
+  socket.on("init", ({ id, playersArrayServer }) => {
+    setMyId(id);
+    setPlayerArry(playersArrayServer);
+    socket.on("move-otherPlayer", (playersArrayServer) => {
+      setPlayerArry(playersArrayServer);
+    });
+  });
 
   return (
     <CanvasContainer>
@@ -31,11 +39,15 @@ function App() {
         <ambientLight />
         <directionalLight position={[10, 10, 10]} color="white" intensity={1} />
         <Suspense fallback={null}>
-          {PlayerArry.map((player, index) => {
-            console.log(player);
+          <Player id={myId} socket={socket} />
+          {PlayerArry.map((otherPlayer, index) => {
+            console.log(otherPlayer);
             return (
-              <group key={index} name={player.name}>
-                <Player name={player.name} id={player.id} />
+              <group key={index}>
+                <mesh position={[otherPlayer.x, 0.5, otherPlayer.z]}>
+                  <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+                  <meshStandardMaterial attach="material" color="fuchsia" />
+                </mesh>
               </group>
             );
           })}

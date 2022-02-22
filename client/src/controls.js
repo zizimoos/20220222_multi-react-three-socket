@@ -1,4 +1,7 @@
-const Controls = (player) => {
+import React from "react";
+
+const Controls = (player, id, socket) => {
+  const [myMoveInfo, setMyMoveInfo] = React.useState({});
   document.onkeydown = (e) => {
     switch (e.keyCode) {
       case 37:
@@ -15,7 +18,14 @@ const Controls = (player) => {
         break;
       default:
     }
-    console.log(player.current.position);
+    const myIno = {
+      id: id,
+      x: player.current.position.x,
+      z: player.current.position.z,
+    };
+    setMyMoveInfo(myIno);
+    console.log("myIno", myIno);
+    socket.emit("move-myPlayer", myIno);
   };
 };
 export default Controls;

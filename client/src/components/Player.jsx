@@ -1,14 +1,13 @@
 import React, { useRef } from "react";
 import Controls from "../controls";
+import PlayerClass from "./PlayerClass";
 
-function Player({ id, name }) {
-  const move = useRef(null);
-  Controls(move);
-
-  console.log("player component", id, name);
+function Player({ id, socket }) {
+  const myMove = useRef(null);
+  Controls(myMove, id, socket);
 
   return (
-    <group ref={move}>
+    <group ref={myMove}>
       <mesh position={[0, 0.5, 0]}>
         <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
         <meshStandardMaterial attach="material" color="fuchsia" />
