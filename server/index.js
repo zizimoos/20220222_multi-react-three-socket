@@ -22,13 +22,22 @@ const io = new Server(server, {
 });
 
 let playersArrayServer = [];
-
+let coinsArrayServer = [];
+for (i = 0; i < 50; i++) {
+  coinsArrayServer.push({
+    id: i,
+    x: Math.random() * 80 - 40,
+    z: Math.random() * 80 - 40,
+  });
+}
+console.log(coinsArrayServer);
 io.on("connection", (socket) => {
   console.log("New client connected ==>", "socket.id :", socket.id);
 
   socket.emit("init", {
     id: socket.id,
     playersArrayServer: playersArrayServer,
+    coinsArrayServer: coinsArrayServer,
   });
 
   socket.on("move-myPlayer", (myInfo) => {

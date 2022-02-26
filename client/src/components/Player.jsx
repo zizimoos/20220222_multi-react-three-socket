@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import Controls from "../controls";
-import PlayerClass from "./PlayerClass";
 
 function Player({ id, socket }) {
   const myMove = useRef(null);
@@ -8,7 +7,7 @@ function Player({ id, socket }) {
 
   return (
     <group ref={myMove}>
-      <mesh position={[0, 0.5, 0]}>
+      <mesh position={[0, 0.5, 0]} castShadow>
         <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
         <meshStandardMaterial attach="material" color="fuchsia" />
       </mesh>
